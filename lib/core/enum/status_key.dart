@@ -1,0 +1,6 @@
+
+enum StatusKey{
+ok,
+ erorr
+
+}

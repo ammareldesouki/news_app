@@ -1,0 +1,137 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [-112, 0],
+      "id": "4cfcd315-37b8-4e5e-8f33-ed21a0654721",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 5,
+        "filters": {
+          "labelIds": ["UNREAD"]
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [96, 0],
+      "id": "1f6dae51-a0c0-47e4-adee-58396d4630ce",
+      "name": "Get many messages",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "RrzXYRqS0Y7bw8t5",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            { "fieldToAggregate": "headers.from" },
+            { "fieldToAggregate": "subject" },
+            { "fieldToAggregate": "id" },
+            { "fieldToAggregate": "snippet" }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [240, 0],
+      "id": "4f4a1e2c-2b7d-42f8-9c86-544119d6984e",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "Sender",
+              "value": "={{ $json['headers.from'][0] }}"
+            },
+            {
+              "name": "Subject",
+              "value": "={{ $json.subject[0] }}"
+            },
+            {
+              "name": "EmailLink",
+              "value": "={{ 'https://mail.google.com/mail/u/0/#inbox/' + $json.id[0] }}"
+            },
+            {
+              "name": "Snippet",
+              "value": "={{ $json.snippet[0] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [400, 0],
+      "id": "set-email-data",
+      "name": "Format Email Data"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "https://docs.google.com/document/d/1GwTkT0lzf1Ugth2daNx93ikpnEG_6WCNu1I0C2tlHjo/edit?usp=sharing",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "=\nSender: {{ $json.Sender }}\nSubject: {{ $json.Subject }}\nLink: {{ $json.EmailLink }}\nSnippet: {{ $json.Snippet }}\n------------------------\n"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [600, 0],
+      "id": "2ed15221-f228-48c7-9da1-47db0ffc34bd",
+      "name": "Update a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "1yFtAdarazvj5pqD",
+          "name": "Google Docs account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          { "node": "Get many messages", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Get many messages": {
+      "main": [
+        [
+          { "node": "Aggregate", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          { "node": "Format Email Data", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Format Email Data": {
+      "main": [
+        [
+          { "node": "Update a document", "type": "main", "index": 0 }
+        ]
+      ]
+    }
+  },
+  "active": false
+}

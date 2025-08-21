@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/core/models/article_model.dart';
 
-import '../../../../core/constants/image_strings.dart';
-
 class ArticleCard extends StatelessWidget{
   final ArticleDetailesModel articleDetailesModel;
 
@@ -21,30 +19,23 @@ class ArticleCard extends StatelessWidget{
      child: Column(
 
        children: [
-         Expanded(
-           child: ClipRRect(
+         SizedBox(
+             height: 220,
+             width: double.infinity,
+             child:
+
+             ClipRRect(
+             
              borderRadius: BorderRadius.circular(16),
              child: Image.network(
-               articleDetailesModel.urlToImage ??
-                   "https://via.placeholder.com/150",
-               fit: BoxFit.cover,
-               errorBuilder: (context, error, stackTrace) {
-                 return Image.asset(
-                   TImages.darkapplogo, // your local fallback image
-                   fit: BoxFit.cover,
-                 );
-               },
-               loadingBuilder: (context, child, loadingProgress) {
-                 if (loadingProgress == null) return child;
-                 return const Center(child: CircularProgressIndicator());
-               },
+               articleDetailesModel.urlToImage ?? "",
              ),
-           ),
+             )
+
          ),
 
-
          Text(articleDetailesModel.title,style: Theme.of(context).textTheme.bodyMedium,),
-
+         Spacer(),
          Row(
            children: [
              Expanded(child: Text("By: ${articleDetailesModel.author??""}", style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.grey),overflow: TextOverflow.ellipsis,maxLines: 2, ))

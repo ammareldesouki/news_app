@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/core/models/article_model.dart';
 import 'package:news_app/core/models/sources_data_model.dart';
 import 'package:news_app/core/network/api_request.dart';
-import 'package:news_app/features/home/presentation/widgets/article_card.dart';
+import 'package:news_app/features/home/presentation/widgets/article_list.dart';
 
 class CategorydDtailsScreen extends StatefulWidget {
 
@@ -17,7 +16,6 @@ class CategorydDtailsScreen extends StatefulWidget {
 }
 
 class _CategorydDtailsScreenState extends State<CategorydDtailsScreen> with TickerProviderStateMixin {
-  late List<ArticleDetailesModel> _articles = [];
   List<SourcesDtailesModel> _sources = [];
   TabController? _tabController;
   int _selectedTabIndex = 0;
@@ -83,7 +81,7 @@ class _CategorydDtailsScreenState extends State<CategorydDtailsScreen> with Tick
     }
 
     return SingleChildScrollView(
-      physics: NeverScrollableScrollPhysics(),
+
       child: Column(
         spacing: 10,
         children: [
@@ -104,36 +102,7 @@ class _CategorydDtailsScreenState extends State<CategorydDtailsScreen> with Tick
               );
             }).toList(),
           ),
-          FutureBuilder<List<ArticleDetailesModel>>(
-            future: ApiRequests.getArticles(_selectedSourceId),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
-
-              if (snapshot.hasError) {
-                return const Center(child: Text('Error loading articles'));
-              }
-
-              List<ArticleDetailesModel> articles = snapshot.data ?? [];
-
-              if (articles.isEmpty) {
-                return const Center(child: Text('No articles available'));
-              }
-
-              return SingleChildScrollView(
-                physics:  CarouselScrollPhysics(),
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  itemBuilder: (context, index) =>
-                      ArticleCard(articleDetailesModel: articles[index]),
-                  separatorBuilder: (context, index) => const SizedBox(height: 10),
-                  itemCount: articles.length,
-                ),
-              );
-            },
-          ),
+          ArticleList(sourceid: _selectedSourceId)
         ],
       ),
     );

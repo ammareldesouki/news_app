@@ -21,7 +21,6 @@ class ArticleCard extends StatelessWidget{
        children: [
          SizedBox(
              height: 220,
-             width: double.infinity,
              child:
 
              ClipRRect(
@@ -29,13 +28,13 @@ class ArticleCard extends StatelessWidget{
              borderRadius: BorderRadius.circular(16),
              child: Image.network(
                articleDetailesModel.urlToImage ?? "",
+               fit: BoxFit.cover,
              ),
              )
 
          ),
 
          Text(articleDetailesModel.title,style: Theme.of(context).textTheme.bodyMedium,),
-         Spacer(),
          Row(
            children: [
              Expanded(child: Text("By: ${articleDetailesModel.author??""}", style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.grey),overflow: TextOverflow.ellipsis,maxLines: 2, ))

@@ -1,15 +1,14 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
+import 'package:news_app/core/constants/colors.dart';
 import 'package:news_app/core/constants/image_strings.dart';
-import 'package:news_app/core/models/category_model.dart';
+import 'package:news_app/core/services/app_setting_provider.dart';
 import 'package:provider/provider.dart';
-
-import '../../../../core/constants/colors.dart';
-import '../../../../core/services/app_setting_provider.dart';
 
 class SideBar extends StatefulWidget {
   const SideBar({super.key, required this.onClikedHomme});
-  final void Function() onClikedHomme;
+
+  final Function onClikedHomme;
   
   @override
   State<SideBar> createState() => _SideBarState();
@@ -45,8 +44,6 @@ class _SideBarState extends State<SideBar> {
             GestureDetector(
               onTap: (){
                 widget.onClikedHomme();
-                Navigator.pop(context);
-
               },
               child: Row(
                 spacing: 5,

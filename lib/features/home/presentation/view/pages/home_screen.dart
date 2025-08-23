@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app/core/constants/image_strings.dart';
 import 'package:news_app/core/models/data.dart';
+import 'package:news_app/features/cubit/home_cubit.dart';
 import 'package:news_app/features/home/presentation/view/pages/category_details_screen.dart';
 import 'package:news_app/features/home/presentation/view/widgets/category_card.dart';
 import 'package:news_app/features/home/presentation/view/widgets/side_bar.dart';
-import 'package:news_app/features/home/view_model/home_view_model.dart';
-import 'package:provider/provider.dart';
+
 
 
 class HomeScreen extends StatelessWidget {
@@ -13,10 +14,12 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => HomeViewModel(),
-      child: Consumer<HomeViewModel>(
-        builder: (context, provider, _) {
+    return BlocProvider(
+      create: (BuildContext context) => HomeCubit(),
+
+      child: BlocBuilder<HomeCubit, HomeState>(
+        builder: (context, provider,) {
+          var provider = HomeCubit.get(context);
           return Scaffold(
             drawer: SideBar(onClikedHomme: () {
               provider.onClickCategoryCard();
@@ -33,9 +36,17 @@ class HomeScreen extends StatelessWidget {
               actions: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: ImageIcon(
-                    const AssetImage(TImages.searchIcon),
-                    size: 35,
+                  child: provider.clickSerch ?
+                  TextFormField() :
+                  GestureDetector(
+                    onTap: () {
+                      provider.onClickSearch();
+                    },
+
+                    child: ImageIcon(
+                      const AssetImage(TImages.searchIcon),
+                      size: 35,
+                    ),
                   ),
                 ),
               ],
@@ -73,10 +84,81 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ],
                 )
-                    : CategorydDtailsScreen(
-                    categoryId: provider.selectedCategory!.id),
+                    :
+
+                CategorydDtailsScreen(
+                    categoryId: provider.selectedCategory!.id)
+                ,
               ),
             ),
+
+            floatingActionButtonLocation: FloatingActionButtonLocation
+                .centerDocked,
+            floatingActionButton: provider.selectedArticle != null ?
+
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Container(
+                padding: EdgeInsets.all(10),
+                height: 413,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    color: Colors.black,
+                    border: Border.all(color: Colors.black),
+                    borderRadius: BorderRadius.circular(16)
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  spacing: 10,
+                  children: [
+                    SizedBox(
+                        height: 220,
+                        child:
+
+                        ClipRRect(
+
+                          borderRadius: BorderRadius.circular(16),
+                          child: Image.network(
+                            provider.selectedArticle!.urlToImage ?? "",
+                            fit: BoxFit.cover,
+                          ),
+                        )
+
+                    ),
+
+                    Text(provider.selectedArticle!.description ??
+                        provider.selectedArticle!.title, style: Theme
+                        .of(context)
+                        .textTheme
+                        .bodyMedium!
+                        .copyWith(color: Colors.white),),
+                    Row(
+                      children: [
+                        Expanded(child: Text(
+                          "By: ${provider.selectedArticle!.author ?? ""}",
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(color: Colors.grey),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,))
+                      ],
+                    ),
+
+                    ElevatedButton(onPressed: () async {
+                      provider.onClickShowArticle(provider.selectedArticle!
+                          .url);
+                      provider.onClickArticleCard();
+                    }
+                        , child: Text("View Full Articel"))
+
+
+                  ],
+                ),
+
+              ),
+            ) : Text(""),
           );
         },
       ),

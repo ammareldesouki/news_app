@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:news_app/features/cubit/home_cubit.dart';
 import 'package:news_app/features/home/presentation/view/widgets/article_list.dart';
-import 'package:news_app/features/home/view_model/home_view_model.dart';
 import 'package:provider/provider.dart';
 
 class CategorydDtailsScreen extends StatefulWidget {
@@ -16,15 +17,14 @@ class _CategorydDtailsScreenState extends State<CategorydDtailsScreen> {
   @override
   void initState() {
     // Load sources for the category
+    var provider = HomeCubit.get(context);
+    provider.loadSources(widget.categoryId);
     Future.wait([
-      Provider.of<HomeViewModel>(
-        context,
-        listen: false,
-      ).loadSources(widget.categoryId),
+      provider.loadSources(widget.categoryId),
     ]).then((value) {
-      Provider.of<HomeViewModel>(context, listen: false).getArticles(
+      provider.getArticles(
         Provider
-            .of<HomeViewModel>(context, listen: false)
+            .of<HomeCubit>(context, listen: false)
             .sources[0].id,
       );
     });
@@ -33,8 +33,10 @@ class _CategorydDtailsScreenState extends State<CategorydDtailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<HomeViewModel>(
-      builder: (context, provider, _) {
+    return BlocBuilder<HomeCubit, HomeState>(
+
+      builder: (context, provider) {
+        var provider = HomeCubit.get(context);
         if (provider.isLoading) {
           return const Center(child: CircularProgressIndicator());
         }
@@ -69,7 +71,7 @@ class _CategorydDtailsScreenState extends State<CategorydDtailsScreen> {
               ),
               SizedBox(height: 10,),
               ArticleList(
-                sourceid: provider.sources[provider.currentTapIndex].id,),
+                  sourceid: provider.sources[provider.currentTapIndex].id),
             ],
           ),
         );

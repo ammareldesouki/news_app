@@ -41,7 +41,7 @@ class ArticleDetailesModel {
       author: json["author"],
       title: json["title"] ?? "",
       description: json["description"],
-      url: json["url"] ?? "",
+      url: json["url"],
       urlToImage: json["urlToImage"],
       publishedAt: json["publishedAt"] ,
 

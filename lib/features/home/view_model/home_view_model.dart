@@ -21,6 +21,12 @@ class HomeViewModel extends ChangeNotifier {
 
   bool get isLoading => _isLoading;
 
+  void onClickCategoryCard({CategoryModel? category}) {
+    _selectedCategory = category;
+
+    notifyListeners();
+  }
+
   Future<void> loadSources(String categoryId) async {
     _isLoading = true;
     notifyListeners();
@@ -32,12 +38,6 @@ class HomeViewModel extends ChangeNotifier {
     }
 
     _isLoading = false;
-    notifyListeners();
-  }
-
-  void onClickCategoryCard({CategoryModel? category}) {
-    _selectedCategory = category;
-
     notifyListeners();
   }
 

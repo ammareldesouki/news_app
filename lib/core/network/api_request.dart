@@ -1,5 +1,4 @@
 import "dart:convert";
-import "dart:math";
 
 import "package:http/http.dart" as http;
 import "package:news_app/core/enum/status_key.dart";
@@ -49,9 +48,10 @@ abstract class ApiRequests {
        );
 
        var data = jsonDecode(response.body);
-       ArticleModel articleModel;
+      print(response.request);
+      ArticleModel articleModel;
 
-       if(response.statusCode==200 && data["status"]==StatusKey.ok.name){
+      if (response.statusCode == 200 && data["status"] == StatusKey.ok.name) {
          articleModel= ArticleModel.fromJson(data);
          return articleModel.sources;
        }else{

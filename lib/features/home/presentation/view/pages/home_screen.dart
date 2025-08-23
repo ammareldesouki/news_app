@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app/core/constants/image_strings.dart';
 import 'package:news_app/core/models/data.dart';
+import 'package:news_app/core/services/app_setting_provider.dart';
 import 'package:news_app/features/cubit/home_cubit.dart';
 import 'package:news_app/features/home/presentation/view/pages/category_details_screen.dart';
 import 'package:news_app/features/home/presentation/view/widgets/category_card.dart';
 import 'package:news_app/features/home/presentation/view/widgets/side_bar.dart';
+import 'package:provider/provider.dart';
 
 
 
@@ -14,6 +16,9 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var dark = Provider
+        .of<AppSettingProvider>(context)
+        .isDarkMode;
     return BlocProvider(
       create: (BuildContext context) => HomeCubit(),
 
@@ -103,38 +108,46 @@ class HomeScreen extends StatelessWidget {
                 height: 413,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                    color: Colors.black,
+                    color: dark ? Colors.white : Colors.black,
                     border: Border.all(color: Colors.black),
                     borderRadius: BorderRadius.circular(16)
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  spacing: 10,
+                  spacing: 6,
                   children: [
-                    SizedBox(
-                        height: 220,
-                        child:
+                    Expanded(
+                      flex: 3,
+                      child: SizedBox(
+                          height: 220,
+                          child:
 
-                        ClipRRect(
+                          ClipRRect(
 
-                          borderRadius: BorderRadius.circular(16),
-                          child: Image.network(
-                            provider.selectedArticle!.urlToImage ?? "",
-                            fit: BoxFit.cover,
-                          ),
-                        )
+                            borderRadius: BorderRadius.circular(16),
+                            child: Image.network(
+                              provider.selectedArticle!.urlToImage ?? "",
+                              fit: BoxFit.cover,
+                            ),
+                          )
 
+                      ),
                     ),
 
-                    Text(provider.selectedArticle!.description ??
-                        provider.selectedArticle!.title, style: Theme
-                        .of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(color: Colors.white),),
+                    Expanded(
+                      flex: 2,
+                      child: Text(provider.selectedArticle!.description ??
+                          provider.selectedArticle!.title, style: Theme
+                          .of(context)
+                          .textTheme
+                          .bodyMedium!
+                          .copyWith(color: dark ? Colors.black : Colors.white)
+                      ),
+                    ),
+
                     Row(
                       children: [
-                        Expanded(child: Text(
+                        Text(
                           "By: ${provider.selectedArticle!.author ?? ""}",
                           style: Theme
                               .of(context)
@@ -142,16 +155,19 @@ class HomeScreen extends StatelessWidget {
                               .bodySmall!
                               .copyWith(color: Colors.grey),
                           overflow: TextOverflow.ellipsis,
-                          maxLines: 2,))
+                          maxLines: 2,)
                       ],
                     ),
 
-                    ElevatedButton(onPressed: () async {
-                      provider.onClickShowArticle(provider.selectedArticle!
-                          .url);
-                      provider.onClickArticleCard();
-                    }
-                        , child: Text("View Full Articel"))
+
+                    Expanded(
+                      child: ElevatedButton(onPressed: () async {
+                        provider.onClickShowArticle(provider.selectedArticle!
+                            .url);
+                        provider.onClickArticleCard();
+                      }
+                          , child: Text("View Full Articel")),
+                    )
 
 
                   ],

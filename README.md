@@ -4,6 +4,13 @@ A modern Flutter news application that provides real-time news from various cate
 using the NewsAPI. The app features a clean Material Design 3 interface with dark/light theme
 support and seamless navigation.
 
+## 📱 Screenshots
+
+![Alt text](https://github.com/ammareldesouki/news_app/blob/d19a1b794ba7eaa68f56ad305293407e8f3f8309/ui.png)
+
+---
+
+
 ## ✨ Features
 
 ### 🏠 Home Screen

@@ -244,6 +244,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ],
     )
-        : CategorydDtailsScreen(categoryName: _Selectedcategory?.id ?? "");
+        : CategorydDtailsScreen(categoryId: _Selectedcategory!.id);
   }
 }

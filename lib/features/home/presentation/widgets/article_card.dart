@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/core/models/article_model.dart';
 import 'package:news_app/core/services/app_setting_provider.dart';
@@ -56,15 +57,20 @@ class ArticleCard extends StatelessWidget{
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (articleDetailesModel.urlToImage != null)
-                            ClipRRect(
+
+
+                          ClipRRect(
                               borderRadius: BorderRadius.circular(12),
-                              child: Image.network(
-                                articleDetailesModel.urlToImage!,
-                                width: double.infinity,
-                                height: 200,
-                                fit: BoxFit.cover,
+                            child: CachedNetworkImage(
+                              imageUrl: articleDetailesModel.urlToImage ?? ":",
+                              progressIndicatorBuilder: (context, url,
+                                  downloadProgress) =>
+                                  CircularProgressIndicator(
+                                      value: downloadProgress.progress),
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.error),
                               ),
+
                             ),
                           const SizedBox(height: 16),
 
@@ -142,9 +148,13 @@ class ArticleCard extends StatelessWidget{
                 width: double.infinity,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
-                  child: Image.network(
-                    articleDetailesModel.urlToImage ?? "",
-                    fit: BoxFit.cover,
+                  child: CachedNetworkImage(
+                    imageUrl: articleDetailesModel.urlToImage ?? "",
+                    progressIndicatorBuilder: (context, url,
+                        downloadProgress) =>
+                        CircularProgressIndicator(
+                            value: downloadProgress.progress),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
                   ),
                 )
             ),

@@ -5,11 +5,10 @@ import 'package:news_app/features/home/presentation/widgets/article_list.dart';
 
 class CategorydDtailsScreen extends StatefulWidget {
 
-  final String categoryName;
+  final String categoryId;
 
 
-
-  const CategorydDtailsScreen({super.key, required this.categoryName});
+  const CategorydDtailsScreen({super.key, required this.categoryId});
 
   @override
   State<CategorydDtailsScreen> createState() => _CategorydDtailsScreenState();
@@ -31,8 +30,8 @@ class _CategorydDtailsScreenState extends State<CategorydDtailsScreen> with Tick
     setState(() {
       _isLoading = true;
     });
-    
-    final sources = await ApiRequests.getSources(widget.categoryName);
+
+    final sources = await ApiRequests.getSources(widget.categoryId);
     
     setState(() {
       _sources = sources;

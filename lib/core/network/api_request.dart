@@ -72,9 +72,8 @@ abstract class ApiRequests {
        Map<String, dynamic> quaryPramenter = {
          "apiKey": ApiConstats.apiKey,
          "q": query,
-         "page": page.toString(),
-         "pageSize": pageSize.toString(),
-         "sortBy": "relevancy", // Sort by relevance for search results
+
+         "sortBy": "relevancy",
        };
 
        final response = await http.get(
@@ -84,6 +83,7 @@ abstract class ApiRequests {
        var data = jsonDecode(response.body);
        ArticleModel articleModel;
 
+       print(response.request);
        if (response.statusCode == 200 && data["status"] == StatusKey.ok.name) {
          articleModel = ArticleModel.fromJson(data);
          return articleModel.sources;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app/features/cubit/home_cubit.dart';
-import 'package:news_app/features/home/presentation/view/widgets/article_list.dart';
+import 'package:news_app/features/home/presentation/widgets/article_list.dart';
 import 'package:provider/provider.dart';
 
 class CategorydDtailsScreen extends StatefulWidget {

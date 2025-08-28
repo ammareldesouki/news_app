@@ -1,8 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:news_app/core/route/route_name.dart';
-import 'package:news_app/features/home/presentation/view/pages/home_screen.dart';
 import 'package:news_app/features/splash/presentation/pages/splash.dart';
+
+import '../../features/home/presentation/pages/home_screen.dart';
 
 
 class AppRouter {

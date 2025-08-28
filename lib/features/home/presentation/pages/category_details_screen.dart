@@ -19,13 +19,9 @@ class _CategorydDtailsScreenState extends State<CategorydDtailsScreen> {
     // Load sources for the category
     var provider = HomeCubit.get(context);
     provider.loadSources(widget.categoryId);
-    Future.wait([
-      provider.loadSources(widget.categoryId),
-    ]).then((value) {
+    Future.wait([provider.loadSources(widget.categoryId)]).then((value) {
       provider.getArticles(
-        Provider
-            .of<HomeCubit>(context, listen: false)
-            .sources[0].id,
+        Provider.of<HomeCubit>(context, listen: false).sources[0].id,
       );
     });
     super.initState();
@@ -34,7 +30,6 @@ class _CategorydDtailsScreenState extends State<CategorydDtailsScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
-
       builder: (context, provider) {
         var provider = HomeCubit.get(context);
         if (provider.isLoading) {
@@ -61,17 +56,15 @@ class _CategorydDtailsScreenState extends State<CategorydDtailsScreen> {
                   tabs: provider.sources.map((data) {
                     return Text(
                       data.name,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .bodyMedium,
+                      style: Theme.of(context).textTheme.bodyMedium,
                     );
                   }).toList(),
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(height: 10),
               ArticleList(
-                  sourceid: provider.sources[provider.currentTapIndex].id),
+                sourceid: provider.sources[provider.currentTapIndex].id,
+              ),
             ],
           ),
         );

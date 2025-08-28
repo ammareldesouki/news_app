@@ -10,7 +10,6 @@ support and seamless navigation.
 
 ---
 
-
 ## ✨ Features
 
 ### 🏠 Home Screen

@@ -50,9 +50,10 @@ abstract class ApiRequests {
        );
 
        var data = jsonDecode(response.body);
+       print(response.request);
        ArticleModel articleModel;
 
-       if(response.statusCode==200 && data["status"]==StatusKey.ok.name){
+       if (response.statusCode == 200 && data["status"] == StatusKey.ok.name) {
          articleModel= ArticleModel.fromJson(data);
          return articleModel.sources;
        }else{

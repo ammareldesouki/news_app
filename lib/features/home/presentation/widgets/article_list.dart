@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/core/models/article_model.dart';
 import 'package:news_app/core/network/api_request.dart';
-import 'package:news_app/features/home/presentation/view/widgets/article_card.dart';
+import 'package:news_app/features/home/presentation/widgets/article_card.dart';
 
 class ArticleList extends StatefulWidget {
   final String sourceid;

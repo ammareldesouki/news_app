@@ -57,20 +57,19 @@ class ArticleCard extends StatelessWidget{
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-
-
-                          ClipRRect(
+                          if (articleDetailesModel.urlToImage != null)
+                            ClipRRect(
                               borderRadius: BorderRadius.circular(12),
-                            child: CachedNetworkImage(
-                              imageUrl: articleDetailesModel.urlToImage ?? ":",
-                              progressIndicatorBuilder: (context, url,
-                                  downloadProgress) =>
-                                  CircularProgressIndicator(
-                                      value: downloadProgress.progress),
-                              errorWidget: (context, url, error) =>
-                                  Icon(Icons.error),
+                              child: CachedNetworkImage(
+                                imageUrl: articleDetailesModel!.urlToImage ??
+                                    "",
+                                progressIndicatorBuilder: (context, url,
+                                    downloadProgress) =>
+                                    CircularProgressIndicator(
+                                        value: downloadProgress.progress),
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.error),
                               ),
-
                             ),
                           const SizedBox(height: 16),
 
@@ -149,7 +148,7 @@ class ArticleCard extends StatelessWidget{
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
                   child: CachedNetworkImage(
-                    imageUrl: articleDetailesModel.urlToImage ?? "",
+                    imageUrl: articleDetailesModel!.urlToImage ?? "",
                     progressIndicatorBuilder: (context, url,
                         downloadProgress) =>
                         CircularProgressIndicator(
